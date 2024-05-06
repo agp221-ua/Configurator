@@ -62,4 +62,36 @@ object Configurator {
     fun clear() {
         Facade.clear()
     }
+
+    inline fun <reified T> addSubscription(key: String, crossinline lambda: (newValue: T) -> Unit) {
+        when (T::class) {
+            String::class -> Facade.addSubscription{ sp, k ->
+                if (k == key)
+                    lambda(sp.getString(key, "") as T)
+            }
+            Int::class -> Facade.addSubscription{ sp, k ->
+                if (k == key)
+                    lambda(sp.getInt(key, 0) as T)
+            }
+            Long::class -> Facade.addSubscription{ sp, k ->
+                if (k == key)
+                    lambda(sp.getLong(key, 0) as T)
+            }
+            Float::class -> Facade.addSubscription{ sp, k ->
+                if (k == key)
+                    lambda(sp.getFloat(key, 0f) as T)
+            }
+            Boolean::class -> Facade.addSubscription{ sp, k ->
+                if (k == key)
+                    lambda(sp.getBoolean(key, false) as T)
+            }
+            Set::class -> Facade.addSubscription{ sp, k ->
+                if (k == key)
+                    lambda(sp.getStringSet(key, emptySet()) as T)
+            }
+            else -> Log.e(PLUGIN_LOG_TAG, "Unsupported type ${T::class}")
+        }
+    }
+
+
 }
