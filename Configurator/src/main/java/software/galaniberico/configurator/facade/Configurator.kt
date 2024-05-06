@@ -1,5 +1,7 @@
 package software.galaniberico.configurator.facade
 
+import android.util.Log
+import software.galaniberico.configurator.configuration.PLUGIN_LOG_TAG
 import software.galaniberico.moduledroid.facade.Facade
 
 object Configurator {
@@ -28,26 +30,36 @@ object Configurator {
     }
 
     fun set(key: String, value: String) {
+        if(key.isBlank()) Log.w(PLUGIN_LOG_TAG, "Trying to set a blank key. Nothing will be set.")
         Facade.set(key, value)
     }
 
     fun set(key: String, value: Int) {
+        if(key.isBlank()) Log.w(PLUGIN_LOG_TAG, "Trying to set a blank key. Nothing will be set.")
         Facade.set(key, value)
     }
 
     fun set(key: String, value: Long) {
+        if(key.isBlank()) Log.w(PLUGIN_LOG_TAG, "Trying to set a blank key. Nothing will be set.")
         Facade.set(key, value)
     }
 
     fun set(key: String, value: Float) {
+        if(key.isBlank()) Log.w(PLUGIN_LOG_TAG, "Trying to set a blank key. Nothing will be set.")
         Facade.set(key, value)
     }
 
     fun set(key: String, value: Boolean) {
+        if(key.isBlank()) Log.w(PLUGIN_LOG_TAG, "Trying to set a blank key. Nothing will be set.")
         Facade.set(key, value)
     }
 
     fun set(key: String, value: Set<String>) {
+        if(key.isBlank()) Log.w(PLUGIN_LOG_TAG, "Trying to set a blank key. Nothing will be set.")
         Facade.set(key, value)
+    }
+
+    fun clear() {
+        Facade.clear()
     }
 }
