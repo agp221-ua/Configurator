@@ -7,6 +7,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import software.galaniberico.configurator.activities.PreferencesValues
 import software.galaniberico.configurator.classes.ClassWithConfValuesBoolean
 import software.galaniberico.configurator.classes.ClassWithConfValuesChildBoolean
 import software.galaniberico.configurator.classes.ClassWithConfValuesChildFloat
@@ -30,6 +31,7 @@ class Config {
     fun setUp() {
         Configurator.clearForce()
         Configurator.clear()
+        PreferencesValues.clear()
     }
 
     @Test
