@@ -12,11 +12,13 @@ moduledroid = "0.1.4"
 moduledroidLocal = "0.1.4"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
+preferenceKtx = "1.2.1"
 runner = "1.5.2"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
 androidx-rules = { module = "androidx.test:rules", version.ref = "core" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
