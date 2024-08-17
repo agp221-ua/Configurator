@@ -16,6 +16,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
+import software.galaniberico.moduledroid.facade.Facade
 
 
 open class ConfigurationActivity : AppCompatActivity() {
@@ -50,15 +51,27 @@ class ModuleDroidPreferencesFragment : PreferenceFragmentCompat() {
                 when (data.type) {
 
                     "Boolean" -> SwitchPreferenceCompat(requireContext()).apply {
+                        setOnPreferenceChangeListener { _, newValue ->
+                            Facade.set(key, newValue as Boolean)
+                            true
+                        }
                         setDefaultValue(data.defaultValue.toBoolean())
                     }
 
                     "MultiSet" -> MultiSelectListPreference(requireContext()).apply {
+                        setOnPreferenceChangeListener { _, newValue ->
+                            Facade.set(key, newValue as Set<String>)
+                            true
+                        }
                         entries = data.entries.toTypedArray()
                         entryValues = data.entries.toTypedArray()
                         setDefaultValue(data.defaultEntries.toTypedArray())
                     }
                     "UniSet" -> ListPreference(requireContext()).apply {
+                        setOnPreferenceChangeListener { _, newValue ->
+                            Facade.set(key, newValue as String)
+                            true
+                        }
                         entries = data.entries.toTypedArray()
                         entryValues = data.entries.toTypedArray()
                         setDefaultValue(data.defaultValue)
@@ -71,6 +84,7 @@ class ModuleDroidPreferencesFragment : PreferenceFragmentCompat() {
                         setOnPreferenceChangeListener { preference, newValue ->
                             try {
                                 newValue.toString().toInt() // Validar que sea un número entero
+                                Facade.set(key, newValue.toString())
                                 return@setOnPreferenceChangeListener true; // Aceptar el cambio
                             } catch (e: NumberFormatException) {
                                 return@setOnPreferenceChangeListener false; // Rechazar el cambio si no es un número entero
@@ -87,6 +101,7 @@ class ModuleDroidPreferencesFragment : PreferenceFragmentCompat() {
                         setOnPreferenceChangeListener { preference, newValue ->
                             try {
                                 newValue.toString().toFloat(); // Validar que sea un número entero
+                                Facade.set(key, newValue.toString())
                                 return@setOnPreferenceChangeListener true; // Aceptar el cambio
                             } catch (e: NumberFormatException) {
                                 return@setOnPreferenceChangeListener false; // Rechazar el cambio si no es un número entero
@@ -102,6 +117,7 @@ class ModuleDroidPreferencesFragment : PreferenceFragmentCompat() {
                         setOnPreferenceChangeListener { preference, newValue ->
                             try {
                                 newValue.toString().toLong() // Validar que sea un número entero
+                                Facade.set(key, newValue.toString())
                                 return@setOnPreferenceChangeListener true; // Aceptar el cambio
                             } catch (e: NumberFormatException) {
                                 return@setOnPreferenceChangeListener false; // Rechazar el cambio si no es un número entero
@@ -110,6 +126,10 @@ class ModuleDroidPreferencesFragment : PreferenceFragmentCompat() {
                         setDefaultValue(data.defaultValue)
                     }
                     else -> EditTextPreference(requireContext()).apply {
+                        setOnPreferenceChangeListener { _, newValue ->
+                            Facade.set(key, newValue as String)
+                            true
+                        }
                         setDefaultValue(data.defaultValue)
                     }
                 }

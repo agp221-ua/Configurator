@@ -7,7 +7,6 @@ import software.galaniberico.configurator.configuration.PLUGIN_LOG_TAG
 import software.galaniberico.configurator.tags.Conf
 import software.galaniberico.moduledroid.facade.Facade
 import java.lang.reflect.Field
-import java.lang.reflect.Type
 
 object Configurator {
     fun get(key: String, defaultValue: String): String {
