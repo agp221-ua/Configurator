@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceScreen
 
-class PreferenceSubmenu(val title: String, val summary: String, val subitems: Array<AbstractPreference>) : AbstractPreference{
+class PreferenceSubmenu(val title: String, val summary: String, vararg val subitems: AbstractPreference) : AbstractPreference{
 
     init {
         if (subitems.isEmpty()) throw IllegalArgumentException("You cannot create a PreferenceSection with no child elements")

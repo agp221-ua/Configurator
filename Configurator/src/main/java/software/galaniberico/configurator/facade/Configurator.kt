@@ -182,8 +182,8 @@ object Configurator {
         f.isAccessible = a
     }
 
-    fun setConfigurationPage(pageItems: Array<AbstractPreference>){
-        PreferencesValues.hierarchy = pageItems
+    fun setConfigurationPage(vararg pageItems: AbstractPreference) {
+        PreferencesValues.hierarchy = arrayOf(*pageItems)
     }
 
     /*

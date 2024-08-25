@@ -3,7 +3,7 @@ package software.galaniberico.configurator.activities
 object PreferencesValues{
     internal val map = mutableMapOf<String, PreferenceItem>()
     internal var hierarchy = emptyArray<AbstractPreference>()
-        set(items: Array<AbstractPreference>) {
+        set(items) {
             items.forEach { it.setValue() }
             field = items
         }
