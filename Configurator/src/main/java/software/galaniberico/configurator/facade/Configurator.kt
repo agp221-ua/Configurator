@@ -1,7 +1,7 @@
 package software.galaniberico.configurator.facade
 
 import android.util.Log
-import software.galaniberico.configurator.activities.PreferenceData
+import software.galaniberico.configurator.activities.AbstractPreference
 import software.galaniberico.configurator.activities.PreferencesValues
 import software.galaniberico.configurator.configuration.PLUGIN_LOG_TAG
 import software.galaniberico.configurator.tags.Conf
@@ -182,8 +182,12 @@ object Configurator {
         f.isAccessible = a
     }
 
+    fun setConfigurationPage(pageItems: Array<AbstractPreference>){
+        PreferencesValues.hierarchy = pageItems
+    }
+
+    /*
     fun ensure(key: String, title: String, summary: String, defaultValue: String): Configurator {
-        if (PreferencesValues.has(key)) throw IllegalStateException("The key $key is already ensured.")
         val value = get(key, defaultValue)
         set(key, value)
         PreferencesValues.set(
@@ -194,7 +198,6 @@ object Configurator {
     }
 
     fun ensure(key: String, title: String, summary: String, defaultValue: Int): Configurator {
-        if (PreferencesValues.has(key)) throw IllegalStateException("The key $key is already ensured.")
         val value = get(key, defaultValue)
         set(key, value)
         PreferencesValues.set(
@@ -213,7 +216,6 @@ object Configurator {
     }
 
     fun ensure(key: String, title: String, summary: String, defaultValue: Float): Configurator {
-        if (PreferencesValues.has(key)) throw IllegalStateException("The key $key is already ensured.")
         val value = get(key, defaultValue)
         set(key, value)
         PreferencesValues.set(
@@ -232,7 +234,6 @@ object Configurator {
     }
 
     fun ensure(key: String, title: String, summary: String, defaultValue: Long): Configurator {
-        if (PreferencesValues.has(key)) throw IllegalStateException("The key $key is already ensured.")
         val value = get(key, defaultValue)
         set(key, value)
         PreferencesValues.set(
@@ -251,7 +252,6 @@ object Configurator {
     }
 
     fun ensure(key: String, title: String, summary: String, defaultValue: Boolean): Configurator {
-        if (PreferencesValues.has(key)) throw IllegalStateException("The key $key is already ensured.")
         val value = get(key, defaultValue)
         set(key, value)
         PreferencesValues.set(
@@ -276,7 +276,6 @@ object Configurator {
         entries: Set<String>,
         defaultValue: Set<String>,
     ): Configurator {
-        if (PreferencesValues.has(key)) throw IllegalStateException("The key $key is already ensured.")
         val value = get(key, defaultValue)
         set(key, value)
         PreferencesValues.set(
@@ -293,7 +292,6 @@ object Configurator {
         entries: Set<String>,
         defaultValue: String,
     ): Configurator {
-        if (PreferencesValues.has(key)) throw IllegalStateException("The key $key is already ensured.")
         val value = get(key, defaultValue)
         set(key, value)
         PreferencesValues.set(
@@ -302,6 +300,6 @@ object Configurator {
         )
         return this
     }
-
+*/
 
 }

@@ -1,15 +1,18 @@
 package software.galaniberico.configurator.activities
 
-import kotlin.enums.EnumEntries
+object PreferencesValues{
+    internal val map = mutableMapOf<String, PreferenceItem>()
+    internal var hierarchy = emptyArray<AbstractPreference>()
+        set(items: Array<AbstractPreference>) {
+            items.forEach { it.setValue() }
+            field = items
+        }
 
-object PreferencesValues {
-    private val map = mutableMapOf<String, PreferenceData>()
-
-    internal fun get(key: String): PreferenceData? {
+    internal fun get(key: String): PreferenceItem? {
         return map[key]
     }
 
-    internal fun set(key: String, value: PreferenceData) {
+    internal fun set(key: String, value: PreferenceItem) {
         map[key] = value
     }
 
@@ -27,20 +30,6 @@ object PreferencesValues {
     internal fun keys(): Set<String> {
         return map.keys
     }
-
-    internal fun map(): Map<String, PreferenceData> {
-        return map
-    }
 }
 
-class PreferenceData(
-    var key: String,
-    var title: String,
-    var summary: String,
-    var type: String,
-    var defaultValue: String,
-    var entries: Set<String>,
-    var defaultEntries: Set<String>){
 
-
-}

@@ -23,11 +23,11 @@ open class ConfigurationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val frameLayout = FrameLayout(this).apply {
-            id = View.generateViewId() // Genera un ID único para el FrameLayout
+            id = View.generateViewId()
             layoutParams = ViewGroup.LayoutParams(
                 MATCH_PARENT,
                 MATCH_PARENT
-            ) // Configura para que ocupe todo_ el espacio
+            )
         }
         setContentView(frameLayout)
         if (savedInstanceState == null) {
@@ -44,100 +44,8 @@ class ModuleDroidPreferencesFragment : PreferenceFragmentCompat() {
         val preferenceScreen: PreferenceScreen =
             preferenceManager.createPreferenceScreen(requireContext())
 
-        val map = PreferencesValues.map()
-
-        for ((key, data) in map) {
-            val pc: Preference =
-                when (data.type) {
-
-                    "Boolean" -> SwitchPreferenceCompat(requireContext()).apply {
-                        setOnPreferenceChangeListener { _, newValue ->
-                            Facade.set(key, newValue as Boolean)
-                            true
-                        }
-                        setDefaultValue(data.defaultValue.toBoolean())
-                    }
-
-                    "MultiSet" -> MultiSelectListPreference(requireContext()).apply {
-                        setOnPreferenceChangeListener { _, newValue ->
-                            Facade.set(key, newValue as Set<String>)
-                            true
-                        }
-                        entries = data.entries.toTypedArray()
-                        entryValues = data.entries.toTypedArray()
-                        setDefaultValue(data.defaultEntries.toTypedArray())
-                    }
-                    "UniSet" -> ListPreference(requireContext()).apply {
-                        setOnPreferenceChangeListener { _, newValue ->
-                            Facade.set(key, newValue as String)
-                            true
-                        }
-                        entries = data.entries.toTypedArray()
-                        entryValues = data.entries.toTypedArray()
-                        setDefaultValue(data.defaultValue)
-                    }
-
-                    "Int" -> EditTextPreference(requireContext()).apply {
-                        setOnBindEditTextListener {
-                            it.inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                        }
-                        setOnPreferenceChangeListener { preference, newValue ->
-                            try {
-                                newValue.toString().toInt() // Validar que sea un número entero
-                                Facade.set(key, newValue.toString())
-                                return@setOnPreferenceChangeListener true; // Aceptar el cambio
-                            } catch (e: NumberFormatException) {
-                                return@setOnPreferenceChangeListener false; // Rechazar el cambio si no es un número entero
-                            }
-                        }
-                        setDefaultValue(data.defaultValue)
-                    }
-
-                    "Float" -> EditTextPreference(requireContext()).apply {
-                        setOnBindEditTextListener {
-                            it.inputType =
-                                android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
-                        }
-                        setOnPreferenceChangeListener { preference, newValue ->
-                            try {
-                                newValue.toString().toFloat(); // Validar que sea un número entero
-                                Facade.set(key, newValue.toString())
-                                return@setOnPreferenceChangeListener true; // Aceptar el cambio
-                            } catch (e: NumberFormatException) {
-                                return@setOnPreferenceChangeListener false; // Rechazar el cambio si no es un número entero
-                            }
-                        }
-                        setDefaultValue(data.defaultValue)
-                    }
-
-                    "Long" -> EditTextPreference(requireContext()).apply {
-                        setOnBindEditTextListener {
-                            it.inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                        }
-                        setOnPreferenceChangeListener { preference, newValue ->
-                            try {
-                                newValue.toString().toLong() // Validar que sea un número entero
-                                Facade.set(key, newValue.toString())
-                                return@setOnPreferenceChangeListener true; // Aceptar el cambio
-                            } catch (e: NumberFormatException) {
-                                return@setOnPreferenceChangeListener false; // Rechazar el cambio si no es un número entero
-                            }
-                        }
-                        setDefaultValue(data.defaultValue)
-                    }
-                    else -> EditTextPreference(requireContext()).apply {
-                        setOnPreferenceChangeListener { _, newValue ->
-                            Facade.set(key, newValue as String)
-                            true
-                        }
-                        setDefaultValue(data.defaultValue)
-                    }
-                }
-
-            pc.key = key
-            pc.title = data.title
-            pc.summary = data.summary
-            preferenceScreen.addPreference(pc)
+        for (preference in PreferencesValues.hierarchy) {
+            preference.addGraphical(preferenceScreen, requireContext())
         }
         setPreferenceScreen(preferenceScreen)
     }
