@@ -4,9 +4,15 @@ object PreferencesValues{
     internal val map = mutableMapOf<String, PreferenceItem>()
     internal var hierarchy = emptyArray<AbstractPreference>()
         set(items) {
-            items.forEach { it.setValue() }
             field = items
+            items.forEach { it.setValue() }
         }
+    internal val indexedSubmenus = mutableListOf<PreferenceSubmenu>()
+
+    internal fun createSubmenuIndex(submenu: PreferenceSubmenu): Int {
+        indexedSubmenus.add(submenu)
+        return indexedSubmenus.lastIndex
+    }
 
     internal fun get(key: String): PreferenceItem? {
         return map[key]
@@ -30,6 +36,7 @@ object PreferencesValues{
     internal fun keys(): Set<String> {
         return map.keys
     }
+
 }
 
 

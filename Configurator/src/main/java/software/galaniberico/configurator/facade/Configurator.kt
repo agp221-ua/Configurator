@@ -183,7 +183,10 @@ object Configurator {
     }
 
     fun setConfigurationPage(vararg pageItems: AbstractPreference) {
+        PreferencesValues.map.clear()
+        PreferencesValues.indexedSubmenus.clear()
         PreferencesValues.hierarchy = arrayOf(*pageItems)
+
     }
 
     /*
