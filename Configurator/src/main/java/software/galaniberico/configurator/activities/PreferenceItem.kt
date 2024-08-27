@@ -1,6 +1,9 @@
 package software.galaniberico.configurator.activities
 
+import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
+import androidx.annotation.StringRes
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
@@ -12,51 +15,122 @@ import androidx.preference.SwitchPreferenceCompat
 import software.galaniberico.configurator.facade.Configurator
 import software.galaniberico.moduledroid.facade.Facade
 
-class PreferenceItem : AbstractPreference{
+class PreferenceItem : AbstractPreference {
     private var key: String
-    private var title: String
-    private var summary: String
+    private var title: String?
+    private var summary: String?
+    private var titleId: Int? = null
+    private var summaryId: Int? = null
     private var type: String
     private var defaultValue: String
     private var entries: Set<String> = emptySet()
     private var defaultEntries: Set<String> = emptySet()
 
-    constructor(key: String, title: String, summary: String, defaultValue: String){
+    constructor(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int,
+        defaultValue: String
+    )
+            : this(key, null, null, defaultValue) {
+        this.titleId = titleId
+        this.summaryId = summaryId
+
+    }
+
+    constructor(key: String, title: String?, summary: String?, defaultValue: String) {
         this.key = key
         this.title = title
         this.summary = summary
         this.type = "String"
         this.defaultValue = defaultValue
     }
-    constructor(key: String, title: String, summary: String, defaultValue: Int){
+
+    constructor(key: String, @StringRes titleId: Int, @StringRes summaryId: Int, defaultValue: Int)
+            : this(key, null, null, defaultValue) {
+        this.titleId = titleId
+        this.summaryId = summaryId
+    }
+
+    constructor(key: String, title: String?, summary: String?, defaultValue: Int) {
         this.key = key
         this.title = title
         this.summary = summary
         this.type = "Int"
         this.defaultValue = defaultValue.toString()
     }
-    constructor(key: String, title: String, summary: String, defaultValue: Float){
+
+    constructor(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int,
+        defaultValue: Float
+    )
+            : this(key, null, null, defaultValue) {
+        this.titleId = titleId
+        this.summaryId = summaryId
+    }
+
+    constructor(key: String, title: String?, summary: String?, defaultValue: Float) {
         this.key = key
         this.title = title
         this.summary = summary
         this.type = "Float"
         this.defaultValue = defaultValue.toString()
     }
-    constructor(key: String, title: String, summary: String, defaultValue: Long){
+
+    constructor(key: String, @StringRes titleId: Int, @StringRes summaryId: Int, defaultValue: Long)
+            : this(key, null, null, defaultValue) {
+        this.titleId = titleId
+        this.summaryId = summaryId
+    }
+
+    constructor(key: String, title: String?, summary: String?, defaultValue: Long) {
         this.key = key
         this.title = title
         this.summary = summary
         this.type = "Long"
         this.defaultValue = defaultValue.toString()
     }
-    constructor(key: String, title: String, summary: String, defaultValue: Boolean){
+
+    constructor(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int,
+        defaultValue: Boolean
+    )
+            : this(key, null, null, defaultValue) {
+        this.titleId = titleId
+        this.summaryId = summaryId
+    }
+
+    constructor(key: String, title: String?, summary: String?, defaultValue: Boolean) {
         this.key = key
         this.title = title
         this.summary = summary
         this.type = "Boolean"
         this.defaultValue = defaultValue.toString()
     }
-    constructor(key: String, title: String, summary: String, entries: Set<String>, defaultValue: Set<String>){
+
+    constructor(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int,
+        entries: Set<String>,
+        defaultValue: Set<String>
+    )
+            : this(key, null, null, entries, defaultValue) {
+        this.titleId = titleId
+        this.summaryId = summaryId
+    }
+
+    constructor(
+        key: String,
+        title: String?,
+        summary: String?,
+        entries: Set<String>,
+        defaultValue: Set<String>
+    ) {
         this.key = key
         this.title = title
         this.summary = summary
@@ -65,7 +139,26 @@ class PreferenceItem : AbstractPreference{
         this.entries = entries
         this.defaultEntries = defaultValue
     }
-    constructor(key: String, title: String, summary: String, entries: Set<String>, defaultValue: String){
+
+    constructor(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int,
+        entries: Set<String>,
+        defaultValue: String
+    )
+            : this(key, null, null, entries, defaultValue) {
+        this.titleId = titleId
+        this.summaryId = summaryId
+    }
+
+    constructor(
+        key: String,
+        title: String?,
+        summary: String?,
+        entries: Set<String>,
+        defaultValue: String
+    ) {
         this.key = key
         this.title = title
         this.summary = summary
@@ -106,6 +199,7 @@ class PreferenceItem : AbstractPreference{
                     it.setDefaultValue(defaultEntries.toTypedArray())
                     return@let it
                 }
+
                 "UniSet" -> ListPreference(context).let {
                     it.setOnPreferenceChangeListener { _, newValue ->
                         Facade.set(key, newValue as String)
@@ -168,6 +262,7 @@ class PreferenceItem : AbstractPreference{
                     it.setDefaultValue(defaultValue)
                     return@let it
                 }
+
                 else -> EditTextPreference(context).let {
                     it.setOnPreferenceChangeListener { _, newValue ->
                         Facade.set(key, newValue as String)
@@ -179,8 +274,9 @@ class PreferenceItem : AbstractPreference{
             }
 
         pc.key = key
-        pc.title = title
-        pc.summary = summary
+        pc.title = title ?: titleId?.let { Facade.getCurrentActivityOrFail().getString(it) }
+        pc.summary = summary ?: summaryId?.let { Facade.getCurrentActivityOrFail().getString(it) }
+        pc.isIconSpaceReserved = false
         preferenceGroup.addPreference(pc)
     }
 
